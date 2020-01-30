@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Prioritize Tasks</title>
+</head>
+
+<body>
+<div id="displayBody">
+  Task Name: <br>
+  <input itype="text" name="task" id="task">
+  <br>
+  <br>
+  Priority: <br>
+  <input type="number" name="priority" id="priority">
+<button    onclick="doWork(document.getElementById('task').value,document.getElementById('priority').value)">Submit new Task</button>
+   <br><br>
+   <br><br>
+   <br><br>
+
+<div id="wrapper">
+<div id="timepicker">
+Date: <input id="datetime" type="text" class="tail-datetime-field" />
+<button    onclick="sortTime(document.getElementById('datetime').value)">Submit Available Time</button>
+</div>
+
+<div id="showall">
+  <button    onclick="showTasks()">Show Prioritized Tasks</button>
+</div>
+</div>
+
+</div>
+
+
+<script>
+var allTasks_a = [], allTasksSorted_a =[], allTimes_a =[];
+  
+function doWork(task, priority) {
+  var entry_o = {"task" : task, "priority" : priority};
+  allTasks_a.push(entry_o);
+  allTasksSorted_a = allTasks_a.slice(0,allTasks_a.length);
+  // Quick Javascript sort way
+  //allTasksSorted_a.sort((entry_1, entry_2) => entry_1.priority > entry_2.priority ? -1 : 1);
+  // my sort code
+  quickSort(allTasksSorted_a, 0, allTasksSorted_a.length-1);
+  console.log(task+ ' ' + priority);
+  console.log(allTasks_a);
+}
+
+function sortTime(time) {
+  allTimes_a.push(time);
+  allTimes_a.sort();
+}
+
+
+function showTasks() {
+   var table_s = '', element, i, header_s = '', element_t, time;
+   header_s = '<h2 id="header_sorted">All Tasks Prioritized <h2>';
+   table_s += '<table id="displayAllSorted"><tr><th>Time</th><th>Task</th><th>Priority</th></tr>'
+
+   // clear the form
+   timeHolder_o.remove();
+
+   element_h = document.getElementById("displayBody");
+   if (typeof element_h !== 'undefined' && element_h !== null) {
+       element_h.parentNode.removeChild(element_h);
+   }
+
+   // create table
+   for (i=0; i<allTasksSorted_a.length;i++) {
+      if (allTimes_a.length > i) {
+         time = allTimes_a[i];
+      }
+      else {
+         time = "No Time";
+      }
+      table_s += '<tr><td>' + time + '</td><td>' + allTasksSorted_a[i].task +'</td><td>' + allTasksSorted_a[i].priority + '</td></tr>'
+   }
+   table_s += '</table>'
+   document.body.innerHTML += header_s;
+   document.body.innerHTML += table_s;
+
+}
+  
+
+function quickSort(arr_a, left, right) {
+      var i = left, j = right, tmp = {}, pivot, pivot_id;
+	//making pivot the average ov the first and last numbers entered
+      pivot_id = Math.floor((left+right)/2);
+      pivot = arr_a[pivot_id].priority;
+      //partition
+      
+	
+	//loop that runs while i is under or equal to j (when they cross in the array)
+      while (i <= j) {
+			//if the pirst spot in the array is under pivot, adds 1 to i
+            while (arr_a[i].priority > pivot)
+
+                  i++;
+			//if the last spot in the array is over pivot, removes 1 from j
+            while (arr_a[j].priority < pivot)
+
+                  j--;
+			//if i is equal to or under j swaps values for arr[i] and arr[j], and adds 1 to i and takes 1 away from j
+            if (i <= j) {
+
+                  tmp = arr_a[i];
+
+                  arr_a[i] = arr_a[j];
+
+                  arr_a[j] = tmp;
+
+                  i++;
+
+                  j--;
+
+            }
+
+      };
+     
+	  //recursion
+      if (left < j)
+
+            quickSort(arr_a, left, j);
+
+      if (i < right)
+
+            quickSort(arr_a, i, right);
+
+
+
+}
+
+</script>
+<link rel="stylesheet" href="tail.DateTime-master/css/tail.datetime-default-blue.css">
+<script type="text/javascript" src="tail.DateTime-master/js/tail.datetime.min.js">
+</script>  
+        
+ 
+<script>
+var timeHolder_o;
+       document.addEventListener("DOMContentLoaded", function(){
+                timeHolder_o = tail.DateTime(".tail-datetime-field",   { dateFormat: 'YYYY-mm-dd', locale: "en", stayOpen: true, startOpen: true
+});
+            });
+</script> 
+
+<style>
+table, th, td {
+  width:50%; 
+  border: 1px solid black;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+#showall {
+  margin-top: 450px;
+}
+
+button {
+  background-color: #009aff; /* Blue*/
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+</style>
+</body>
+</html>
