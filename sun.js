@@ -1,3 +1,7 @@
+function setup() {
+  createCanvas(600, 600);
+}
+
 angleMode = "degrees";
 var backgroundColor = color(135, 206, 250);
 var sunColor = color(255, 255, 0);
